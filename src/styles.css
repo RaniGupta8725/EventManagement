@@ -1,0 +1,4 @@
+/* You can add global styles to this file, and also import other style files */
+body { background: #f7f7f7; }
+h2, h3 { font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
+.card { box-shadow: 0 2px 7px rgba(0,0,0,0.04); }

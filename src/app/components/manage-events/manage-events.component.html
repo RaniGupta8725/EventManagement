@@ -1,0 +1,59 @@
+<div class="card p-4 shadow-sm">
+  <h3 class="mb-3">Manage Events</h3>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <div class="mb-3">
+      <label class="form-label">Event Title</label>
+      <input formControlName="title" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Event Date & Time</label>
+      <input type="datetime-local" formControlName="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea rows="2" formControlName="description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Upload Image/Video</label>
+      <input type="file" (change)="onFileChange($event)" class="form-control" />
+      <div *ngIf="previewDataUrl" class="mt-2">
+        <img *ngIf="previewDataUrl.startsWith('data:image')" [src]="previewDataUrl" class="img-thumbnail" style="max-width:120px" />
+        <video *ngIf="previewDataUrl.startsWith('data:video')" [src]="previewDataUrl" controls style="max-width:120px"></video>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">{{ editingId ? 'Update Event' : 'Save Event' }}</button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="resetForm()">Clear</button>
+  </form>
+
+  <div class="mt-4">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Media</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of events$ | async">
+          <td>{{ e.title }}</td>
+          <td>{{ e.date | date: 'd MMM yyyy' }}</td>
+          <td>
+            <img *ngIf="e.mediaDataUrl" [src]="e.mediaDataUrl" style="height:30px; object-fit:cover; border-radius:3px;" />
+          </td>
+          <td>
+            <button class="btn btn-warning btn-sm me-1" (click)="edit(e)">Edit</button>
+            <button class="btn btn-danger btn-sm me-1" (click)="delete(e.id)">Del</button>
+            <button class="btn btn-secondary btn-sm" (click)="download(e)">Download</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
