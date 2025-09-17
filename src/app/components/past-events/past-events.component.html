@@ -1,22 +1,31 @@
-<div class="card p-4 shadow-sm">
+
+<div class="card p-3 shadow-sm">
   <h2 class="text-center mb-4">Past Events</h2>
 
-  <div class="d-flex flex-wrap">
-    <div class="event-card me-3 mb-3" *ngFor="let e of events$ | async">
-      <div class="img-wrap">
-        <img [src]="e.mediaDataUrl" alt="{{e.title}}" />
-      </div>
-      <div class="card-body px-2 py-2">
-        <h5 class="mb-1">{{ e.title }}</h5>
-        <p class="small text-muted mb-2">
-          {{ e.date | date: 'd MMM yyyy, h:mm a' }}
-        </p>
-        <p class="desc mb-2">{{ e.description }}</p>
-        <div>
-          <button class="btn btn-primary btn-sm me-2" (click)="viewDetails(e)">View Details</button>
-          <button class="btn btn-success btn-sm" (click)="download(e)">Download</button>
+  <div class="scroll-container-wrapper">
+    <button class="scroll-btn left" (click)="scrollLeftPast()">&#10094;</button>
+
+    <div class="scroll-container" #scrollContainerPast>
+      <div class="event-card me-3 mb-3" *ngFor="let e of events$ | async">
+        <div class="img-wrap">
+          <img [src]="e.mediaDataUrl" alt="{{e.title}}" />
+        </div>
+        <div class="card-body px-2 py-2">
+          <h5 class="mb-1">{{ e.title }}</h5>
+          <p class="small text-muted mb-2">
+            {{ e.date | date: 'd MMM yyyy, h:mm a' }}
+          </p>
+          <p class="desc mb-2">{{ e.description }}</p>
+          <div>
+            <button class="btn btn-primary btn-sm me-2" (click)="viewDetails(e)">View Details</button>
+            <button class="btn btn-success btn-sm" (click)="download(e)">Download</button>
+          </div>
         </div>
       </div>
     </div>
+
+    <button class="scroll-btn right" (click)="scrollRightPast()">&#10095;</button>
   </div>
 </div>
+
+

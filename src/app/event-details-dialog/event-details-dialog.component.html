@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content class="mat-typography">
+  <img *ngIf="data.mediaDataUrl"
+       [src]="data.mediaDataUrl"
+       alt="{{ data.title }}"
+       class="img-fluid mb-3 rounded" />
+
+  <p><strong>Date:</strong> {{ data.date | date: 'd MMM yyyy, h:mm a' }}</p>
+  <p>{{ data.description }}</p>
+</mat-dialog-content>
+<mat-dialog-actions class="custom-actions">
+  <button mat-button class="btn btn-success btn-sm">Add</button>
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>
+
+

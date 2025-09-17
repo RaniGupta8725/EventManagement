@@ -8,28 +8,29 @@ const initialEvents: EventItem[] = [
     title: 'Music Concert',
     date: new Date(2025, 8, 20, 19, 9).toISOString(),
     description: 'Enjoy a night full of live performances by top artists.',
-    mediaName: 'concert.jpg',
+    mediaName: 'satyam.jpg',
     mediaType: 'image/jpeg',
-    mediaDataUrl: 'assets/concert.jpg'
+    mediaDataUrl: 'assets/satyam.jpg'
   },
   {
     id: 2,
     title: 'Drama Festival',
     date: new Date(2025, 8, 25, 17, 0).toISOString(),
     description: 'A festival of local and national theatre productions.',
-    mediaName: 'drama.jpg',
+    mediaName: 'satyam1.jpeg',
     mediaType: 'image/jpeg',
-    mediaDataUrl: 'assets/drama.jpg'
+    mediaDataUrl: 'assets/satyam1.jpeg'
   },
   {
     id: 3,
     title: 'Art Exhibition',
     date: new Date(2025, 8, 28, 11, 0).toISOString(),
     description: 'Explore modern art by top artists.',
-    mediaName: 'art.jpg',
+    mediaName: 'satyam2.jpg',
     mediaType: 'image/jpeg',
-    mediaDataUrl: 'assets/art.jpg'
+    mediaDataUrl: 'assets/satyam2.jpg'
   }
+  
 ];
 
 @Injectable({
@@ -48,6 +49,7 @@ export class EventService {
   addEvent(event: EventItem) {
     const newEvent = { ...event, id: this.idCounter++ };
     this.eventsSubject.next([...this.getSnapshot(), newEvent]);
+    console.log(this.eventsSubject)
   }
 
   updateEvent(id: number, updates: Partial<EventItem>) {

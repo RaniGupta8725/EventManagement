@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs/internal/Observable';
+import { EventDetailsDialogComponent } from 'src/app/event-details-dialog/event-details-dialog.component';
 import { EventItem } from 'src/app/models/EventItem';
 import { EventService } from 'src/app/services/event.service';
 
@@ -11,14 +13,27 @@ import { EventService } from 'src/app/services/event.service';
 export class UpcomingEventsComponent {
 events$: Observable<EventItem[]>;
 
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService,private dialog: MatDialog) {
     this.events$ = this.eventService.events$;
   }
-   viewDetails(e: EventItem) {
-    alert(`${e.title}\n${new Date(e.date).toLocaleString()}\n\n${e.description || ''}`);
-  }
+  
 
   download(e: EventItem) {
     this.eventService.downloadMedia(e);
+  }
+    @ViewChild('scrollContainer', { read: ElementRef }) scrollContainer!: ElementRef;
+
+  scrollLeft() {
+    this.scrollContainer.nativeElement.scrollBy({ left: -250, behavior: 'smooth' });
+  }
+
+  scrollRight() {
+    this.scrollContainer.nativeElement.scrollBy({ left: 250, behavior: 'smooth' });
+  }
+  viewDetails(event: any) {
+    this.dialog.open(EventDetailsDialogComponent, {
+      data: event,
+      width: '600px'
+    });
   }
 }

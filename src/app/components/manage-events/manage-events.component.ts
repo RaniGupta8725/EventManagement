@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { EventItem } from 'src/app/models/EventItem';
+import { EventService } from 'src/app/services/event.service';
 
 
 @Component({
@@ -12,10 +14,14 @@ import { EventItem } from 'src/app/models/EventItem';
 export class ManageEventsComponent {
 form: FormGroup;
   events$ = new BehaviorSubject<EventItem[]>([]);
+   dataSource = new MatTableDataSource<EventItem>();
+
   previewDataUrl: string | null = null;
   editingId: number | null = null;
 
-  constructor(private fb: FormBuilder) {
+  
+
+  constructor(private fb: FormBuilder, private eventService: EventService) {
     this.form = this.fb.group({
       title: ['', Validators.required],
       date: ['', Validators.required],
@@ -31,32 +37,26 @@ onFileChange(event: Event) {
       reader.readAsDataURL(file);
     }
   }
-   save() {
+  save() {
     if (this.form.invalid) return;
 
-    const events = this.events$.value;
+    const newEvent: EventItem = {
+      id: Date.now(),
+      ...this.form.value,
+      mediaDataUrl: this.previewDataUrl || undefined
+    };
 
-    if (this.editingId) {
-      // update
-      const index = events.findIndex(e => e.id === this.editingId);
-      if (index > -1) {
-        events[index] = {
-          ...events[index],
-          ...this.form.value,
-          mediaDataUrl: this.previewDataUrl ?? events[index].mediaDataUrl
-        };
-      }
-    } else {
-      // insert
-      events.push({
-        id: Date.now(),
-        ...this.form.value,
-        mediaDataUrl: this.previewDataUrl || undefined
-      });
-    }
+    this.eventService.addEvent(newEvent);
+     const updatedEvents = [...this.events$.value, newEvent];
+    this.events$.next(updatedEvents);
+     this.dataSource.data = updatedEvents;
 
-    this.events$.next([...events]);
     this.resetForm();
+  }
+
+  resetForm() {
+    this.form.reset();
+    this.previewDataUrl = null;
   }
 
   edit(e: EventItem) {
@@ -82,10 +82,6 @@ onFileChange(event: Event) {
     link.click();
   }
 
-  resetForm() {
-    this.form.reset();
-    this.previewDataUrl = null;
-    this.editingId = null;
-  }
+  
 
 }

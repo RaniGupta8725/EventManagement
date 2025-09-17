@@ -1,0 +1,12 @@
+.custom-actions {
+  display: flex;
+  justify-content: space-between; /* Left button to left, right button to right */
+}
+.green-btn {
+  background-color: #4caf50; /* green */
+  color: white;
+}
+
+.green-btn:hover {
+  background-color: #45a049; /* darker green on hover */
+}
